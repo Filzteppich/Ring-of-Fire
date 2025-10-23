@@ -1,0 +1,5 @@
+<mat-card >
+    <mat-card-header class="card-header"> {{ currentPlayer !== undefined ? (card ? title : "Please pick a card!") : ('Add Players') }} </mat-card-header>
+    <mat-card-content> {{ currentPlayer !== undefined ?  (card ? description : "Click on the card to pick it!") : ('Please add at least one Player') }}</mat-card-content>
+
+</mat-card>

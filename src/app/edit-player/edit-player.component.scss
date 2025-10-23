@@ -1,0 +1,33 @@
+:host{
+min-width: 300px;
+}
+
+
+
+.player-wrap{
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.profile-img{
+    display: flex;
+    flex-direction: row;
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+
+    &:hover{
+        cursor: pointer;
+        filter: brightness(1.15);
+    }
+}
+
+.delete-btn{
+    color: #BF2C2C !important;
+
+    &:hover{
+        background-color: #BF2C2C;
+        color: whitesmoke !important;
+    }
+}

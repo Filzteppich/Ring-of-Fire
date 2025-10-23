@@ -1,20 +1,33 @@
+
+
 .field{
     width: 100vw;
     height: 100vh;
     max-width: 100%;
-    background-image: url(/assets/img/board.jpg);
-    object-fit: cover;
+    background-image: url(./../../assets/img/board.jpg);
+    object-fit: contain;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-position: inherit;
 }
 
 .card-stack{
     position: relative;
+    /* Basis-Offsets per CSS-Variable steuern (responsive anpassbar) */
+    @media screen and (max-width : 450px) {
+        transform: translateX(70px);
+    }
+    transform: translateX(20px);
     >img{
         width: 120px;
         position: absolute;
+
     }
+}
+
+.yugioh-card{
+    border-radius: 5px;
 }
 
 .top-card{
@@ -26,6 +39,22 @@
     }   
 }
 
+.stack-amount{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    background-color: #004F4F;
+    color: #00FBFB;
+    margin: 50px 0 0 30px;
+    border-radius: 10px;
+        @media screen and (max-width : 450px) {
+        margin: 50px 0 0 70px;
+    }
+}
+
+
 .pick-card{
     animation: pick-card-animation 1s ease-in-out;
     transform: scale(1.1)  translateY(-220px) translateX(30px) rotate(-30deg) ;
@@ -33,10 +62,14 @@
 
 .played-card{
     transform: scale(1.1)  translateY(-220px) translateX(30px) rotate(-30deg) ;
-    right: 25px;
+    right: var(--stack-top-right, 25px);
 }
 
-
+.preload-card{
+    display: none;
+    z-index: -100;
+    opacity: 0;
+}
 
 @keyframes pick-card-animation{
     0%{
@@ -47,5 +80,113 @@
         transform: scale(1.7)  ;
     }100%{
         transform: scale(1.1)  translateY(-220px) translateX(30px) rotate(-30deg);
+    }
+}
+
+.player-wrap{
+    position: absolute;
+    right: 0;
+
+    &:hover{
+        cursor: pointer;
+        filter: brightness(1.10);
+    }
+}
+
+.fab-icon{
+    width: 80px;
+    height: 80px;
+    border-radius: 100%;
+    position: absolute;
+    right: 36px;
+    bottom: 36px;
+    >mat-icon{
+        scale: 2;
+    }
+}
+
+.scroll-container{
+    position: absolute;
+    left: 0;
+    right: 0;
+        display: flex;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        scroll-snap-type: x mandatory;
+      app-mobile-player{
+        margin-left: 8px;
+      }
+}
+
+.pin-bottom{
+    position: absolute;
+    bottom: 32px;
+    left: 150px;
+    right: 150px;
+    color: white;
+
+    @media screen and (max-width : 800px) {
+        width: 80%;
+        left: 5px;
+        right: 0;
+    }
+    @media screen and (max-width : 650px) {
+        width: 70%;
+        left: 5px;
+    }
+    @media screen and (max-width : 440px) {
+        width: 60%;
+        left: 5px;
+    }
+}
+
+.hide-desktop{
+    display: none;
+}
+
+.hide-mobile{
+    display: flex;
+}
+
+@media screen and (max-width : 750px) {
+    .hide-mobile{
+        display: none;
+    }
+
+    .hide-desktop{
+        display: flex;
+    }
+}
+
+.history-icon{
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    bottom: 150px;
+    background-color: #004F4F;
+    border: unset;
+    >img{
+        width: 80%;
+        filter: brightness(0) saturate(100%) invert(81%) sepia(74%) saturate(1389%) hue-rotate(121deg) brightness(103%) contrast(109%);
+    }
+    &:hover{
+        cursor: pointer;
+        background-color: #005D5D;
+    }
+}
+
+.history{
+    background-color: white;
+    position: absolute;
+    width: 80%;
+    height: 80%;
+}
+
+/* Responsive Feintuning: auf schmalen Geräten etwas weiter nach rechts schieben,
+   damit gezogene Karten nicht abgeschnitten werden. Passe die Werte bei Bedarf an. */
+@media screen and (max-width: 480px) {
+    .card-stack{
+        --stack-right: 16px;      /* Basis-Offset für Stackkarten */
+        --stack-top-right: 36px;  /* Offset für Top-/Played-/Pick-Karte */
     }
 }

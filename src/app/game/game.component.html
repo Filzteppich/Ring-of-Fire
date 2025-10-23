@@ -1,11 +1,89 @@
+<app-player
+  *ngFor="let player of game.players; let i = index"
+  [ngStyle]="{ 'top.px': 100 + i * 70 }"
+  [playerIndex]="i"
+  [name]="player"
+  [playerActive]="i == game.currentPlayer"
+  [image]="game.images[i]"
+  (playerRemoved)="removePlayer($event)"
+  class="player-wrap hide-mobile"
+  (click)="editPlayer(i)"
+></app-player>
+
+<div class="scroll-container hide-desktop">
+  <app-mobile-player
+    *ngFor="let player of game.players; let i = index"
+    [ngStyle]="{ 'left.px': 30 + i * 170 }"
+    [playerIndex]="i"
+    [name]="player"
+    [image]="game.images[i]"
+    [playerActive]="i == game.currentPlayer"
+    (playerRemoved)="removePlayer($event)"
+    class="mobile-player-wrap"
+    (click)="editPlayer(i)"
+  ></app-mobile-player>
+</div>
+
 <div class="field">
+  <div  class="card-stack">
+    <img
+      *ngFor="let c of [1, 2, 3, 4, 5]; let i = index"
+      [style.right]="'calc(var(--stack-right, 0px) + ' + (i * 5) + 'px)'"
+      src="assets/img/cards/yugioh-card-bg.jpg"
+      class="yugioh-card"
+      
+    />
 
-    <div class="card-stack">
-        <img *ngFor="let c of [1, 2, 3, 4, 5] let i = index" [ngStyle]="{'right.px': i * 5}"  src="/assets/img/cards/card_cover.png" alt="">
+    <img
+      class="top-card yugioh-card"
+      (click)="takeCard()"
+      [style.right]="'var(--stack-top-right, 25px)'"
+      src="assets/img/cards/yugioh-card-bg.jpg"
+      alt=""
+    />
+    <img
+      class="played-card"
+      *ngFor="let card of game.playedCards"
+      src="assets/img/cards/{{ card }}.png"
+      alt=""
+    />
+    <img
+      class="pick-card"
+      (click)="takeCard()"
+      *ngIf="game.pickCardAnimation"
+      [style.right]="'var(--stack-top-right, 25px)'"
+      src="assets/img/cards/{{ game.currentCard }}.png"
+      alt=""
+    />
+    <img
+      class="preload-card"
+      src="assets/img/cards/{{ game.stack[game.stack.length - 1] }}.png"
+      alt=""
+    />
+  </div>
 
-        <img class="top-card" (click)="takeCard()" style="right: 25px" src="/assets/img/cards/card_cover.png" alt="">
-        <img class="played-card" *ngFor="let card of game.playedCards" src="/assets/img/cards/{{ card }}.png" alt="">
-        <img class="pick-card" (click)="takeCard()" *ngIf="pickCardAnimation" style="right: 25px" src="/assets/img/cards/{{ currentCard }}.png" alt="">
-    </div>
+  <div class="stack-amount">
+    <span> {{game.stack.length}}</span>
+  </div>
 
+  <section>
+    <button mat-fab (click)="openHistory()" class="fab-icon history-icon">
+      <!-- <img src="assets/img/book.png" alt="" /> -->
+       <mat-icon>book</mat-icon>
+    </button>
+    <button mat-fab (click)="openDialog()" class="fab-icon">
+      <mat-icon>add</mat-icon>
+    </button>
+  </section>
+  <app-game-info
+    [card]="game.currentCard"
+    [currentPlayer]="game.players[game.currentPlayer]"
+    [cardStack]="game.stack.length"
+    class="pin-bottom"
+  ></app-game-info>
+
+
+  <!-- <div class="history">
+    ololeo
+  </div> -->
 </div>
