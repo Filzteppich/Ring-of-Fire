@@ -22,9 +22,7 @@ export class StartScreenComponent {
   async newGame(){
     let game = new Game();
     await addDoc(collection(this.firestore, "games"), game.toJson()).then((gameInfo) => {
-      console.log(gameInfo.id);
       this.Router.navigateByUrl('/game/' + gameInfo.id);
-      
     })
   }
 

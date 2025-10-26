@@ -26,6 +26,13 @@
     }
 }
 
+
+.restart-button{
+    width: 200px;
+    height: 50px;
+    background-color: red;
+}
+
 .yugioh-card{
     border-radius: 5px;
 }
@@ -103,6 +110,10 @@
     >mat-icon{
         scale: 2;
     }
+}
+
+.restart-icon{
+    bottom: 264px;
 }
 
 .scroll-container{

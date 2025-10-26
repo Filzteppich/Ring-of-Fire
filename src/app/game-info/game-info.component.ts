@@ -84,11 +84,8 @@ description: string = '';
         this.title = "Game Over"
         this.description = "Keine Karten mehr im Deck"
       }else{
-              console.log("current card is " + this.card);
-      console.log("currend number is " + this.card?.split("_")[1]);
       this.title = this.cardAction[+this.card.split("_")[1]-1].title;
       this.description = this.cardAction[+this.card.split("_")[1]-1].description;
-      console.log(this.currentPlayer);
       }
     }
     

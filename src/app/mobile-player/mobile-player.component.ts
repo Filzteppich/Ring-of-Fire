@@ -28,10 +28,8 @@ export class MobilePlayerComponent implements OnChanges {
 
   private scrollIntoViewIfNeeded(){
     try{
-      // Scroll das Host-Element in den sichtbaren Bereich des nächstgelegenen Scroll-Containers
       this.host.nativeElement.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
     }catch(err){
-      // best-effort
     }
   }
 }

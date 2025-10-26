@@ -29,24 +29,15 @@ export class GameComponent implements OnInit{
   gameId!: string ;
   gameOver: boolean = false;
 
-  // items$: Observable<any[]>;
 
 
   constructor(private route: ActivatedRoute, private injector: Injector){
-    // const aCollection = collection(this.firestore, 'games')
-    // this.items$ = collectionData(aCollection);
-    // console.log(this.items$);
-    // this.items$.subscribe((games) => { console.log(games);
-    // })
-    // this.addDoc();
   }
   
   ngOnInit(): void {
     this.game = new Game();
     
     this.route.params.subscribe((params) => {
-      console.log(params);
-      
       if (params['id']) {
         this.gameId = params['id'];
           runInInjectionContext(this.injector, () => {
@@ -61,9 +52,7 @@ export class GameComponent implements OnInit{
             this.game.pickCardAnimation = gameData.pickCardAnimation,
             this.game.currentCard = gameData.currentCard
             this.game.history = gameData.history || [];
-            // Mobile scroll handled within child via Input change
           }
-          console.log(gameData);
           
         });
           });
@@ -76,16 +65,14 @@ export class GameComponent implements OnInit{
   takeCard(){
     
     if (this.game.pickCardAnimation === false && this.game.players.length > 0) {
-      if (this.game.stack.length === 0) {
-        this.gameOver = true;
-      }else{
+      
       this.game.pickCardAnimation = true;
       this.game.currentCard = this.game.stack.pop();
       
       this.game.currentPlayer++;
       this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
       this.game.playerName = this.game.players[this.game.currentPlayer]
-      console.log(this.game.players[this.game.currentPlayer]);
+      this.checkGameOver();
       this.getHistoryInfo( this.game.playerName,  this.game.currentCard);
       this.updateGame();
       
@@ -95,8 +82,15 @@ export class GameComponent implements OnInit{
         this.updateGame();
       }, 1000);
       }
-
     }
+
+
+checkGameOver(){
+  if (this.game.stack.length === 0) {
+       return this.gameOver = true;
+  }else{
+    return
+  }
 }
 
 getHistoryInfo(playerName: string, playerCard: any){
@@ -106,30 +100,23 @@ getHistoryInfo(playerName: string, playerCard: any){
   const newCardType = this.game.toGerType(cardType);
   const newCardNumber = this.game.getRuleInfo(cardNumber);
 
-  console.log(playerName + ": " + cardType + " " + cardNumber);
   const history = playerName + ": " + newCardType + " " + newCardNumber;
   this.game.history.push(history);
-  console.log("history: " + this.game.history);
-  
-  //this.updateGame();
 }
 
 
 editPlayer(index: number){
-  console.log("player " + index + "has been clicked" );
   const dialogRef = this.dialog.open(EditPlayerComponent);
 
-      dialogRef.afterClosed().subscribe(( change : string) => {
+  dialogRef.afterClosed().subscribe(( change : string) => {
     if (change) {
       if (change === 'delete'){
         this.game.players.splice(index, 1);
         this.game.images.splice(index, 1);
         this.updateGame();
       }else{
-        console.log('img ' + change + ' received');
         this.game.images[index] = change;
         this.updateGame();
-
       }
       
     }   
@@ -150,7 +137,15 @@ openDialog(): void {
     });
   }
 
-
+restartGame(){
+  const keepPlayers = this.game.players;
+  const keepImages = this.game.images;
+  this.game = new Game();
+  this.game.players = keepPlayers;
+  this.game.images = keepImages;
+  this.updateGame();
+  this.gameOver = false;
+}
 
 
 removePlayer(index: number){
@@ -161,12 +156,11 @@ removePlayer(index: number){
 }
 
 async updateGame(){
-  //this.firestore.collection('games').doc(this.gameId).update(this.game.toJson());
   if (this.gameId) {
     let docRef = this.getSingleDocRef(this.gameId);
     await updateDoc(docRef, this.game.toJson()).catch(
       (err) => {
-        console.log(err);
+        console.error(err);
       }
     )
   }

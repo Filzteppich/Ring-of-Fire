@@ -18,7 +18,6 @@ export class DialogHistoryComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // Beim Öffnen einmal nach unten scrollen (smooth)
     setTimeout(() => this.scrollToBottom('smooth'), 0);
   }
 
@@ -29,7 +28,6 @@ export class DialogHistoryComponent implements AfterViewInit {
         el.scrollIntoView({ behavior, block: 'end' });
       }
     }catch(e){
-      // best-effort
     }
   }
 }
